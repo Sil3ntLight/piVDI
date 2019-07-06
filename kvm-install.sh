@@ -36,12 +36,14 @@ create_bridge()
     read ethLink
     if [ -z $(cat /etc/network/interfaces | grep "iface vmbr0") ]; then
         echo
-        "iface vmbr0 inet dhcp
+        "iface $ethlink inet manual
+iface vmbr0 inet dhcp
     bridge_ports    $ethLink
     bridge_stp      off
     bridge_maxwait  0
     bridge_fd       0" >>  /etc/network/interfaces
         /etc/init.d/networking restart
+        ifup vmbr0
         echo "Bridge vmbr0 created!"
     else
         echo "Error: vmbr0 already defined..."
