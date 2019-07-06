@@ -10,7 +10,7 @@ check_kvm()
 {
     echo "Checking for KVM Capability..."
     
-    if [ "$(egrep  '(vmx|svm)' --color=always /proc/cpuinfo)" -gt "0" ]; then
+    if [ "$(egrep  '(vmx|svm)' --color=always /proc/cpuinfo)" ]; then
         echo "KVM capability is enabled!"
     else
         echo "ERROR: KVM capability is not available..."
@@ -101,5 +101,5 @@ END
     create-vm)
         create_vm $2 $3 $4 $5 $6 $7 $8 $9 $10 $11 $12
         ;;
-
+esac
         
