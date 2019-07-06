@@ -97,7 +97,7 @@ app.post('/api/v1/vms', (req, res) => {
         state: req.body.state
     }
 
-    const vmscript = exec(`sh kvm-install.sh create-vm ${req.body.name} ${req.body.description} ${req.body.ostype} ${req.body.osvariant} ${req.body.ram} ${req.body.vcpus} ${req.body.diskpath} ${req.body.disksize} ${req.body.graphics} ${req.body.cdrom} ${req.body.bridge}`)
+    const vmscript = exec(`virt-install -n ${req.body.name} --description ${req.body.description} --os-type ${req.body.ostype} --os-variant ${req.body.osvariant} --ram ${req.body.ram} --vcpus ${req.body.vcpus} --disk path=${req.body.diskpath},bus=virtio,size=${req.body.disksize} --graphics ${req.body.graphics} --cdrom ${req.body.cdrom} --network bridge:${req.body.bridge}`)
 
     vmscript.stdout.on('data', function(data){
         console.log(data);
