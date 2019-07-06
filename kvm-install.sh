@@ -87,7 +87,7 @@ case "$1" in
             CREATE-VM OPTIONS:
             ------------------
             usage: sudo kvm-install.sh create-vm [vmName] [vmDescription] [OS Type] [OS Variant] [RAM MB] [# of vCPUs] [disk file path] [new disk size] [graphics type (spice, vnc, none)] [Install ISO] [Network Bridge]
-        END
+END
         ;;
     
     check)
