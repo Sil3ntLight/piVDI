@@ -14,13 +14,14 @@ app.use(function (req, res, next) {
 
 
 app.get('/api/v1/vms', (req, res) => {
-    var listvms = exec(`virsh list --all --name`)
 
-    res.status(200).send({
-        success: 'true',
-        message: 'vms retrieved successfully',
-        vms: db
-    })
+	res.status(200).send({
+	    success: 'true',
+	    message: 'vms retrieved successfully',
+	    vms: db
+	})        
+    
+
 })
 
 app.post('/api/v1/vms', (req, res) => {
@@ -97,32 +98,32 @@ app.post('/api/v1/vms', (req, res) => {
         state: req.body.state
     }
 
-    const vmscript = exec(`virt-install -n ${req.body.name} --description ${req.body.description} --os-type ${req.body.ostype} --os-variant ${req.body.osvariant} --ram ${req.body.ram} --vcpus ${req.body.vcpus} --disk path=${req.body.diskpath},bus=virtio,size=${req.body.disksize} --graphics ${req.body.graphics} --cdrom ${req.body.cdrom} --network bridge:${req.body.bridge}`)
-
-    vmscript.stdout.on('data', function(data){
-        console.log(data);
+    const vmscript = exec(`virt-install --name ${req.body.name} --description \"${req.body.description}\" --os-type ${req.body.ostype} --ram ${req.body.ram} --vcpus ${req.body.vcpus} --disk path=${req.body.diskpath},bus=virtio,size=${req.body.disksize} --graphics ${req.body.graphics} --cdrom ${req.body.cdrom} --network bridge:${req.body.bridge}`, function(error, stdout, stderr) {
+        console.log('stdout: ', stdout);
+        console.log('stderr: ', stderr);
+        if (error !== null) {
+            return res.status(400).send({
+                success: 'false',
+                message: `create vm failed with: \n${stderr}`
+            })
+        } else {
+            db.push(vm);
+            return res.status(201).send({
+                success: 'true',
+                message: 'vm added successfully',
+                vm
+            })
+        }
     })
 
-    vmscript.stderr.on('data', function(data){
-        console.log(data);
-        return res.status(400).send({
-            success: 'false',
-            message: `create vm failed with: \n${data}`
-        })
-    })
 
-    db.push(vm);
-    return res.status(201).send({
-        success: 'true',
-        message: 'vm added successfully',
-        vm
-    })
+
 })
 
-app.get('/api/v1/vms/:id', (req, res) => {
-    const id = parseInt(req.params.id, 10);
+app.get('/api/v1/vms/:name', (req, res) => {
+    const name = req.params.name
     db.map((vm) => {
-        if (vm.id === id) {
+        if (vm.name === name) {
             return res.status(200).send({
                 success: 'true',
                 message: 'vm retrieval successful',

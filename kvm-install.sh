@@ -36,7 +36,7 @@ create_bridge()
     read ethLink
     if [ -z $(cat /etc/network/interfaces | grep "iface vmbr0") ]; then
         echo
-        "iface $ethlink inet manual
+        "auto vmbr0
 iface vmbr0 inet dhcp
     bridge_ports    $ethLink
     bridge_stp      off
