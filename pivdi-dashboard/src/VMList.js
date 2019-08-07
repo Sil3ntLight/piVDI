@@ -15,7 +15,7 @@ const VMList = ({ vms }) => {
                                 <a className="close" onClick={close}>
                                     &times;
                                 </a>
-                                <div className="modal-header"> Modal Title </div>
+                                <div className="modal-header"> New VM </div>
                                 <div className="content">
                                     {" "}
                                     <New />
@@ -28,6 +28,7 @@ const VMList = ({ vms }) => {
                                 >
                                     Cancel
                                 </button>
+                                
                                 <button className="button"
                                     onClick={() => {
                                         console.log("modal closed ");
