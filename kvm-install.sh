@@ -28,6 +28,7 @@ check_kvm()
 create_bridge()
 {
     echo "Checking for network utilities..."
+    
     apt install -y ip
 
     echo "Creating bridge vmbr0..."
@@ -76,6 +77,19 @@ create_vm()
 }
 
 ##### MAIN
+if [ -z $1 ]; then
+    cat <<- END
+    FLAGS:
+    ------
+    check = determine capability and install kvm utils
+    create-bridge = make new networking bridge for kvm usage
+    create-vm = Install new vm
+
+    CREATE-VM OPTIONS:
+    ------------------
+    usage: sudo kvm-install.sh create-vm [vmName] [vmDescription] [OS Type] [OS Variant] [RAM MB] [# of vCPUs] [disk file path] [new disk size] [graphics type (spice, vnc, none)] [Install ISO] [Network Bridge]
+END
+fi
 
 case "$1" in
     help)
